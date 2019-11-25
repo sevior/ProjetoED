@@ -6,6 +6,17 @@ public class Joia {
     private double preço;
     private int quantidade;
 
+    public Joia(String nome, double preço, int quantidade) {
+        this.nome = nome;
+        this.preço = preço;
+        this.quantidade = quantidade;
+    }
+
+    public Joia() {
+    }
+
+    
+    
     public String getNome() {
         return nome;
     }

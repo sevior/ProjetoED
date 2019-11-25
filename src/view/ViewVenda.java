@@ -2,10 +2,10 @@ package view;
 
 import javax.swing.JOptionPane;
 import model.Joia;
-import model.ProdutoTableModel;
+import model.Lista;
 import model.ProdutoVenda;
-import model.TableModelVenda;
-import model.TableModelVendasRealizadas;
+import static model.ProdutoVenda.carrinho;
+import model.Utils;
 
 /**
  *
@@ -13,13 +13,11 @@ import model.TableModelVendasRealizadas;
  */
 public class ViewVenda extends javax.swing.JFrame {
 
-    TableModelVenda tabelaProdutos = new TableModelVenda();
     double total = 0;
 
     public ViewVenda() {
         initComponents();
         selecionarProdutos();
-        jTProdutos.setModel(tabelaProdutos);
 
     }
 
@@ -109,15 +107,20 @@ public class ViewVenda extends javax.swing.JFrame {
 
         jTProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nome", "Preço", "Quantidade"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(jTProdutos);
 
         jtTotal.addActionListener(new java.awt.event.ActionListener() {
@@ -218,54 +221,33 @@ public class ViewVenda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void selecionarProdutos() {
-        for (Joia joias : ProdutoTableModel.dadosJoias) {
-            cbProdutos.addItem(joias);
-        }
+
     }
     private void cbProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProdutosActionPerformed
+        Joia joia = new Joia();
+        for (int i = 0; i < Utils.listaEstoque.tamanho(); i++) {
+            joia = (Joia) Utils.listaEstoque.pega(i);
+            cbProdutos.addItem(joia);
 
+        }
 
     }//GEN-LAST:event_cbProdutosActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Joia joia = (Joia) cbProdutos.getSelectedItem();
-        Joia itemTabela = new Joia();
+        Lista<Joia> carrinho = new Lista<>();
 
-        itemTabela.setNome(joia.getNome());
-        itemTabela.setPreço(joia.getPreço());
-        itemTabela.setQuantidade(Integer.parseInt(txtQuantidadeProduto.getText()));
-
-        if (joia.getQuantidade() <= 0) {
-            JOptionPane.showMessageDialog(null, "Produto zerado no estoque, por favor selecione outro item");
-        } else {
-            tabelaProdutos.addRow(itemTabela);
-            this.attEstoque();
-            if (joia.getQuantidade() > 1) {
-                total += (joia.getPreço() * Integer.parseInt(txtQuantidadeProduto.getText()));
-            } else {
-                total += joia.getPreço();
-            }
-            jtTotal.setText(String.format("%.2f", total));
-            JOptionPane.showMessageDialog(null, "Produto adicionado a lista");
-
-            txtQuantidadeProduto.setText("");
-        }
-
-
+        carrinho.adiciona(cbProdutos.getSelectedItem());
+        JOptionPane.showMessageDialog(null, "Item adicionado ao carrinho");
+        jtTotal.setText(String.format("%.2f", total));
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVenderActionPerformed
+        ProdutoVenda pv = new ProdutoVenda(txtNomeCliente.getText(), txtTelefone.getText(), txtData.getText(), carrinho, total);
+        Utils.vendasRealizadas.adiciona(pv);
 
-        if (!TableModelVenda.produtos.isEmpty()) {
-            ProdutoVenda pv = new ProdutoVenda(txtNomeCliente.getText(), txtTelefone.getText(), txtData.getText(), TableModelVenda.produtos, total);
-            TableModelVendasRealizadas.dadosVenda.add(pv);
-            JOptionPane.showMessageDialog(null, "Venda concluida com sucesso");
-            this.limparCampos();
-        } else {
-            JOptionPane.showMessageDialog(null, "Carrinho vazio, selecione algum item");
-            btVender.disable();
-
-        }
+        System.out.println(Utils.vendasRealizadas);
+        this.limparCampos();
+        JOptionPane.showMessageDialog(null, "Venda realizada com sucesso");
     }//GEN-LAST:event_btVenderActionPerformed
 
     private void txtNomeClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeClienteActionPerformed
@@ -284,19 +266,6 @@ public class ViewVenda extends javax.swing.JFrame {
         txtTelefone.setText("");
         txtData.setText("");
         jtTotal.setText("");
-    }
-
-
-    public void attEstoque() {
-        Joia produto = new Joia();
-
-        produto = (Joia) cbProdutos.getSelectedItem();
-
-        for (Joia p : ProdutoTableModel.dadosJoias) {
-            if (produto.getNome().equals(p.getNome())) {
-                p.setQuantidade(p.getQuantidade() - Integer.parseInt(txtQuantidadeProduto.getText()));
-            }
-        }
     }
 
     /**

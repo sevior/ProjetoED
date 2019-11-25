@@ -5,33 +5,29 @@
  */
 package model;
 
-import java.util.List;
-
 /**
  *
  * @author Junior
  */
 public class ProdutoVenda {
 
-    static void carrinho(Joia joia) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     private String nomeCliente;
     private String telefone;
     private String data;
     private double total = 0;
     private int parcelas;
-    public static List<Joia> carrinho;
+    public static Lista<Joia> carrinho;
 
-    public ProdutoVenda(String nomeCliente, String telefone, String data, List<Joia> carrinho, double total) {
+    public ProdutoVenda(String nomeCliente, String telefone, String data, Lista<Joia> carrinho, double total) {
         this.nomeCliente = nomeCliente;
         this.telefone = telefone;
         this.data = data;
         this.carrinho = carrinho;
         this.total = total;
     }
-    public ProdutoVenda(){}
+
+    public ProdutoVenda() {
+    }
 
     public String getData() {
         return data;
@@ -41,11 +37,11 @@ public class ProdutoVenda {
         this.data = data;
     }
 
-    public List<Joia> getCarrinho() {
+    public Lista<Joia> getCarrinho() {
         return carrinho;
     }
 
-    public void setCarrinho(List<Joia> carrinho) {
+    public void setCarrinho(Lista<Joia> carrinho) {
         this.carrinho = carrinho;
     }
 
@@ -67,7 +63,7 @@ public class ProdutoVenda {
 
     @Override
     public String toString() {
-        return "Nome do cliente: " + nomeCliente + ", Telefone: " + telefone + ", Data da Venda: " + data + "\nProdutos: " + carrinho+"\nTotal da compra: R$"+String.format("%.2f", total);
+        return "Nome do cliente: " + nomeCliente + ", Telefone: " + telefone + ", Data da Venda: " + data + "\nProdutos: " + carrinho + "\nTotal da compra: R$" + String.format("%.2f", total);
     }
 
 }

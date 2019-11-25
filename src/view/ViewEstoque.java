@@ -1,27 +1,36 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.Joia;
-import model.ProdutoTableModel;
+import model.Utils;
 
 /**
  *
  * @author Junior
  */
-public class ViewProduto extends javax.swing.JFrame {
+public class ViewEstoque extends javax.swing.JFrame {
 
     /**
      * Creates new form ViewProduto
      */
-    
-    ProdutoTableModel tabelaJoias = new ProdutoTableModel();
-    public ViewProduto() {
+    public ViewEstoque() {
         initComponents();
-        jTProdutos.setModel(tabelaJoias);
+        this.leituraTabela();
+
+    }
+
+    public void leituraTabela() {
+        DefaultTableModel dtmProdutos = (DefaultTableModel) jTProdutos.getModel();
+        dtmProdutos.setNumRows(0);
+        Joia joia = new Joia();
+        for (int i = 0; i < Utils.listaEstoque.tamanho(); i++) {
+            joia = (Joia) Utils.listaEstoque.pega(i);
+
+            dtmProdutos.addRow(new Object[]{joia.getNome(), joia.getPreço(), joia.getQuantidade()});
+
+        }
+
     }
 
     /**
@@ -50,15 +59,30 @@ public class ViewProduto extends javax.swing.JFrame {
 
         jTProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Descrição", "Preço", "Quantidade"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTProdutosMouseClicked(evt);
+            }
+        });
+        jTProdutos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTProdutosKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTProdutos);
 
         txtNomeProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -150,42 +174,74 @@ public class ViewProduto extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void limparCampos(){
-    txtNomeProduto.setText("");
-    txtPreco.setText("");
-    txtQuantidade.setText("");
+    public void limparCampos() {
+        txtNomeProduto.setText("");
+        txtPreco.setText("");
+        txtQuantidade.setText("");
     }
-    
-    
+
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       Joia joia = new Joia();
-       
-       joia.setNome(txtNomeProduto.getText());
-       joia.setPreço(Double.parseDouble(txtPreco.getText()));
-       joia.setQuantidade(Integer.parseInt(txtQuantidade.getText()));
-               
-       tabelaJoias.addRow(joia);
-       this.limparCampos();
-        
+        DefaultTableModel dtmProdutos = (DefaultTableModel) jTProdutos.getModel();
+        Object[] dados = {txtNomeProduto.getText(), txtPreco.getText(), txtQuantidade.getText()};
+        Joia joia = new Joia(txtNomeProduto.getText(), Double.parseDouble(txtPreco.getText()), Integer.parseInt(txtQuantidade.getText()));
+        Utils.listaEstoque.adiciona(joia);
+
+        dtmProdutos.addRow(dados);
+
+        this.limparCampos();
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       if(jTProdutos.getSelectedRow() != -1){
-           tabelaJoias.removeRow(jTProdutos.getSelectedRow());
-       }
+        if (jTProdutos.getSelectedRow() != -1) {
+            DefaultTableModel dtmProdutos = (DefaultTableModel) jTProdutos.getModel();
+            dtmProdutos.removeRow(jTProdutos.getSelectedRow());
+            this.limparCampos();
+        } else {
+            JOptionPane.showMessageDialog(null, "Nenhum produto selecionado");
+        }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if(jTProdutos.getSelectedRow() != -1){
-            tabelaJoias.setValueAt(txtNomeProduto.getText(), jTProdutos.getSelectedRow(), 0);
-            tabelaJoias.setValueAt(txtPreco.getText(), jTProdutos.getSelectedRow(), 1);
-            tabelaJoias.setValueAt(txtQuantidade.getText(), jTProdutos.getSelectedRow(), 2);
+        if (jTProdutos.getSelectedRow() != -1) {
+            jTProdutos.setValueAt(txtNomeProduto.getText(), jTProdutos.getSelectedRow(), 0);
+            jTProdutos.setValueAt(txtPreco.getText(), jTProdutos.getSelectedRow(), 1);
+            jTProdutos.setValueAt(txtQuantidade.getText(), jTProdutos.getSelectedRow(), 2);
+            this.limparCampos();
+        } else {
+            JOptionPane.showMessageDialog(null, "Nenhum produto selecionado");
+
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void txtNomeProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeProdutoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomeProdutoActionPerformed
+
+    private void jTProdutosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTProdutosKeyReleased
+        if (jTProdutos.getSelectedRow() != -1) {
+            txtNomeProduto.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 0).toString());
+            txtPreco.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 1).toString());
+            txtQuantidade.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 2).toString());
+        } else {
+            JOptionPane.showMessageDialog(null, "Nenhum produto selecionado");
+
+        }
+    }//GEN-LAST:event_jTProdutosKeyReleased
+
+    private void jTProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTProdutosMouseClicked
+        if (jTProdutos.getSelectedRow() != -1) {
+            txtNomeProduto.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 0).toString());
+            txtPreco.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 1).toString());
+            txtQuantidade.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 2).toString());
+        } else {
+            JOptionPane.showMessageDialog(null, "Nenhum produto selecionado");
+
+        }
+    }//GEN-LAST:event_jTProdutosMouseClicked
 
     /**
      * @param args the command line arguments
@@ -204,20 +260,21 @@ public class ViewProduto extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewEstoque.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewEstoque.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewEstoque.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewEstoque.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewProduto().setVisible(true);
+                new ViewEstoque().setVisible(true);
             }
         });
     }

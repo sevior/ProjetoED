@@ -1,17 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import model.Joia;
 import model.ProdutoVenda;
-import model.TableModelVendasRealizadas;
+import model.Utils;
 
 /**
  *
@@ -167,24 +157,18 @@ public class ViewVendasRealizadas extends javax.swing.JFrame {
 
     @SuppressWarnings("empty-statement")
     private void btPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesquisarActionPerformed
-        DefaultTableModel dtmProdutos = (DefaultTableModel) jTComprasDoCliente.getModel();
-        List<Joia> joias = new ArrayList<>();
-
-        for (ProdutoVenda p : TableModelVendasRealizadas.dadosVenda) {
+        ProdutoVenda p = new ProdutoVenda();
+        for (int i = 0; i < Utils.vendasRealizadas.tamanho(); i++) {
+            p = (ProdutoVenda) Utils.vendasRealizadas.pega(i);
             if (txtPesqNomeCliente.getText().equalsIgnoreCase(p.getNomeCliente())) {
                 txtNomeCliente.setText(p.getNomeCliente());
                 txtTelefone.setText(p.getTelefone());
                 txtData.setText(p.getData());
-                joias.addAll(p.getCarrinho());
-                for (int i = 0; i < joias.size(); i++) {
-                    Object[] dados = {joias.get(i).getNome(), joias.get(i).getPreço(), joias.get(i).getQuantidade()};
-                    dtmProdutos.addRow(dados);
-                }
             } else {
-                JOptionPane.showMessageDialog(null, "Cliente não encontrado");
+                System.out.println("Deu ruim");
             }
-
         }
+
 
     }//GEN-LAST:event_btPesquisarActionPerformed
 

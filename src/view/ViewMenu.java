@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 /**
@@ -95,15 +90,15 @@ public class ViewMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       ViewProduto produto = new ViewProduto();
-       produto.show(true);
-      
+        ViewEstoque produto = new ViewEstoque();
+        produto.show(true);
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         ViewVenda venda = new ViewVenda();
         venda.show(true);
-       
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -111,8 +106,8 @@ public class ViewMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-       ViewVendasRealizadas vendasRealizadas = new ViewVendasRealizadas();
-       vendasRealizadas.show(true);
+        ViewVendasRealizadas vendasRealizadas = new ViewVendasRealizadas();
+        vendasRealizadas.show(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
