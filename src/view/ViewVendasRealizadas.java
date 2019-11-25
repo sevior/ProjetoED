@@ -7,7 +7,6 @@ package view;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Joia;
