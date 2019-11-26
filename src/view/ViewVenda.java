@@ -5,7 +5,6 @@ import javax.swing.table.DefaultTableModel;
 import model.Joia;
 import model.Lista;
 import model.ProdutoVenda;
-import static model.ProdutoVenda.carrinho;
 import model.Utils;
 
 /**
@@ -14,6 +13,7 @@ import model.Utils;
  */
 public class ViewVenda extends javax.swing.JFrame {
 
+    Lista<Joia> c = new Lista<>();
     double total = 0;
 
     public ViewVenda() {
@@ -38,7 +38,7 @@ public class ViewVenda extends javax.swing.JFrame {
         txtTelefone = new javax.swing.JFormattedTextField();
         cbProdutos = new javax.swing.JComboBox<>();
         btVender = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btSelecionar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         txtData = new javax.swing.JFormattedTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -81,10 +81,10 @@ public class ViewVenda extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Selecionar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btSelecionar.setText("Selecionar");
+        btSelecionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btSelecionarActionPerformed(evt);
             }
         });
 
@@ -152,7 +152,7 @@ public class ViewVenda extends javax.swing.JFrame {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel2)))
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btSelecionar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtNomeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,7 +191,7 @@ public class ViewVenda extends javax.swing.JFrame {
                     .addComponent(txtQuantidadeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(btSelecionar)
                     .addComponent(btVender))
                 .addGap(27, 27, 27)
                 .addComponent(jLabel6)
@@ -229,28 +229,25 @@ public class ViewVenda extends javax.swing.JFrame {
 
         }
     }
-    
-    public void preencherCarrinho(){
-        
-    }
-    
+
+
     private void cbProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProdutosActionPerformed
 
 
     }//GEN-LAST:event_cbProdutosActionPerformed
-    
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+    private void btSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSelecionarActionPerformed
         DefaultTableModel dtmProdutos = (DefaultTableModel) jTProdutos.getModel();
-        Lista<Joia> carrinho = new Lista<>();
-        
+
         Joia joia = (Joia) cbProdutos.getSelectedItem();
-        
-        joia.setQuantidade(joia.getQuantidade()-Integer.parseInt(txtQuantidadeProduto.getText()));
-        Object dados[] = {joia.getNome(),joia.getPreço(),txtQuantidadeProduto.getText()};
-        
+        joia.setQuantidade(joia.getQuantidade() - Integer.parseInt(txtQuantidadeProduto.getText()));
+        Object dados[] = {joia.getNome(), joia.getPreço(), txtQuantidadeProduto.getText()};
+
         dtmProdutos.addRow(dados);
-        carrinho.adiciona(joia);
-        
+
+        Joia p = new Joia(joia.getNome(), joia.getPreço(), Integer.parseInt(txtQuantidadeProduto.getText()));
+        c.adiciona(p);
+
         if (Integer.parseInt(txtQuantidadeProduto.getText()) > 1) {
             total += (joia.getPreço() * Integer.parseInt(txtQuantidadeProduto.getText()));
         } else {
@@ -259,11 +256,11 @@ public class ViewVenda extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Item adicionado ao carrinho");
         jtTotal.setText(String.format("%.2f", total));
         txtQuantidadeProduto.setText("");
-       
-    }//GEN-LAST:event_jButton2ActionPerformed
+
+    }//GEN-LAST:event_btSelecionarActionPerformed
 
     private void btVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVenderActionPerformed
-        ProdutoVenda pv = new ProdutoVenda(txtNomeCliente.getText(), txtTelefone.getText(), txtData.getText(), carrinho, total);
+        ProdutoVenda pv = new ProdutoVenda(txtNomeCliente.getText(), txtTelefone.getText(), txtData.getText(), c, total);
         Utils.vendasRealizadas.adiciona(pv);
 
         System.out.println(Utils.vendasRealizadas);
@@ -325,9 +322,9 @@ public class ViewVenda extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btSelecionar;
     private javax.swing.JButton btVender;
     private javax.swing.JComboBox<Joia> cbProdutos;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

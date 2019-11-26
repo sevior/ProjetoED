@@ -16,7 +16,23 @@ public class ProdutoVenda {
     private String data;
     private double total = 0;
     private int parcelas;
-    public static Lista<Joia> carrinho;
+    public  Lista<Joia> carrinho;
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public int getParcelas() {
+        return parcelas;
+    }
+
+    public void setParcelas(int parcelas) {
+        this.parcelas = parcelas;
+    }
 
     public ProdutoVenda(String nomeCliente, String telefone, String data, Lista<Joia> carrinho, double total) {
         this.nomeCliente = nomeCliente;

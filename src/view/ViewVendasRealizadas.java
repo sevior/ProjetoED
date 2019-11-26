@@ -36,6 +36,8 @@ public class ViewVendasRealizadas extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTComprasDoCliente = new javax.swing.JTable();
         btPesquisar = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        txtValorDoPedido = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Vendas Realizadas");
@@ -96,6 +98,14 @@ public class ViewVendasRealizadas extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Total do pedido R$");
+
+        txtValorDoPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtValorDoPedidoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -128,7 +138,12 @@ public class ViewVendasRealizadas extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtValorDoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,8 +165,12 @@ public class ViewVendasRealizadas extends javax.swing.JFrame {
                     .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtValorDoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
@@ -165,6 +184,7 @@ public class ViewVendasRealizadas extends javax.swing.JFrame {
         txtNomeCliente.disable();
         txtData.disable();
         txtTelefone.disable();
+        txtValorDoPedido.disable();
     }
 
     @SuppressWarnings("empty-statement")
@@ -178,12 +198,11 @@ public class ViewVendasRealizadas extends javax.swing.JFrame {
                 txtNomeCliente.setText(p.getNomeCliente());
                 txtTelefone.setText(p.getTelefone());
                 txtData.setText(p.getData());
+                txtValorDoPedido.setText(String.format("%.2f",p.getTotal()));
                 for (int j = 0; j < p.carrinho.tamanho(); j++) {
                     joia = (Joia) p.carrinho.pega(j);
                     dtmProdutos.addRow(new Object[]{joia.getNome(), joia.getPreço(), joia.getQuantidade()});
                 }
-            } else {
-
             }
         }
 
@@ -193,6 +212,10 @@ public class ViewVendasRealizadas extends javax.swing.JFrame {
     private void txtNomeClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeClienteKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomeClienteKeyPressed
+
+    private void txtValorDoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValorDoPedidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtValorDoPedidoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -235,11 +258,13 @@ public class ViewVendasRealizadas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTComprasDoCliente;
     private javax.swing.JFormattedTextField txtData;
     private javax.swing.JTextField txtNomeCliente;
     private javax.swing.JTextField txtPesqNomeCliente;
     private javax.swing.JFormattedTextField txtTelefone;
+    private javax.swing.JTextField txtValorDoPedido;
     // End of variables declaration//GEN-END:variables
 }
