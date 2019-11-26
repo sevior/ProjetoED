@@ -1,9 +1,7 @@
 package view;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.Joia;
 import model.Lista;
 import model.ProdutoVenda;
@@ -224,25 +222,44 @@ public class ViewVenda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void selecionarProdutos() {
-          for (int i = 0; i < Utils.listaEstoque.tamanho(); i++) {
-           Joia joia = (Joia) Utils.listaEstoque.pega(i);
-           System.out.println(joia);
+        Joia joia = new Joia();
+        for (int i = 0; i < Utils.listaEstoque.tamanho(); i++) {
+            joia = (Joia) Utils.listaEstoque.pega(i);
             cbProdutos.addItem(joia);
 
         }
     }
+    
+    public void preencherCarrinho(){
+        
+    }
+    
     private void cbProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProdutosActionPerformed
 
-     
 
     }//GEN-LAST:event_cbProdutosActionPerformed
-
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        DefaultTableModel dtmProdutos = (DefaultTableModel) jTProdutos.getModel();
         Lista<Joia> carrinho = new Lista<>();
-
-        carrinho.adiciona(cbProdutos.getSelectedItem());
+        
+        Joia joia = (Joia) cbProdutos.getSelectedItem();
+        
+        joia.setQuantidade(joia.getQuantidade()-Integer.parseInt(txtQuantidadeProduto.getText()));
+        Object dados[] = {joia.getNome(),joia.getPreço(),txtQuantidadeProduto.getText()};
+        
+        dtmProdutos.addRow(dados);
+        carrinho.adiciona(joia);
+        
+        if (Integer.parseInt(txtQuantidadeProduto.getText()) > 1) {
+            total += (joia.getPreço() * Integer.parseInt(txtQuantidadeProduto.getText()));
+        } else {
+            total += joia.getPreço();
+        }
         JOptionPane.showMessageDialog(null, "Item adicionado ao carrinho");
         jtTotal.setText(String.format("%.2f", total));
+        txtQuantidadeProduto.setText("");
+       
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVenderActionPerformed

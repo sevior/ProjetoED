@@ -115,6 +115,7 @@
     <Component class="javax.swing.JTextField" name="txtNomeCliente">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNomeClienteActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNomeClienteKeyPressed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="txtTelefone">

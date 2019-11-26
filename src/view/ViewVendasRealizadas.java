@@ -1,5 +1,7 @@
 package view;
 
+import javax.swing.table.DefaultTableModel;
+import model.Joia;
 import model.ProdutoVenda;
 import model.Utils;
 
@@ -11,7 +13,7 @@ public class ViewVendasRealizadas extends javax.swing.JFrame {
 
     public ViewVendasRealizadas() {
         initComponents();
-
+        this.desativarCampos();
     }
 
     /**
@@ -47,6 +49,11 @@ public class ViewVendasRealizadas extends javax.swing.JFrame {
         txtNomeCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNomeClienteActionPerformed(evt);
+            }
+        });
+        txtNomeCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNomeClienteKeyPressed(evt);
             }
         });
 
@@ -154,23 +161,38 @@ public class ViewVendasRealizadas extends javax.swing.JFrame {
     private void txtNomeClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeClienteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomeClienteActionPerformed
+    public void desativarCampos() {
+        txtNomeCliente.disable();
+        txtData.disable();
+        txtTelefone.disable();
+    }
 
     @SuppressWarnings("empty-statement")
     private void btPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesquisarActionPerformed
         ProdutoVenda p = new ProdutoVenda();
+        DefaultTableModel dtmProdutos = (DefaultTableModel) jTComprasDoCliente.getModel();
+        Joia joia = new Joia();
         for (int i = 0; i < Utils.vendasRealizadas.tamanho(); i++) {
             p = (ProdutoVenda) Utils.vendasRealizadas.pega(i);
             if (txtPesqNomeCliente.getText().equalsIgnoreCase(p.getNomeCliente())) {
                 txtNomeCliente.setText(p.getNomeCliente());
                 txtTelefone.setText(p.getTelefone());
                 txtData.setText(p.getData());
+                for (int j = 0; j < p.carrinho.tamanho(); j++) {
+                    joia = (Joia) p.carrinho.pega(j);
+                    dtmProdutos.addRow(new Object[]{joia.getNome(), joia.getPreço(), joia.getQuantidade()});
+                }
             } else {
-                System.out.println("Deu ruim");
+
             }
         }
 
 
     }//GEN-LAST:event_btPesquisarActionPerformed
+
+    private void txtNomeClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeClienteKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNomeClienteKeyPressed
 
     /**
      * @param args the command line arguments
