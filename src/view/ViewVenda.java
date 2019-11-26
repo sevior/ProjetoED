@@ -1,5 +1,8 @@
 package view;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import javax.swing.JOptionPane;
 import model.Joia;
 import model.Lista;
@@ -221,15 +224,16 @@ public class ViewVenda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void selecionarProdutos() {
-
-    }
-    private void cbProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProdutosActionPerformed
-        Joia joia = new Joia();
-        for (int i = 0; i < Utils.listaEstoque.tamanho(); i++) {
-            joia = (Joia) Utils.listaEstoque.pega(i);
+          for (int i = 0; i < Utils.listaEstoque.tamanho(); i++) {
+           Joia joia = (Joia) Utils.listaEstoque.pega(i);
+           System.out.println(joia);
             cbProdutos.addItem(joia);
 
         }
+    }
+    private void cbProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProdutosActionPerformed
+
+     
 
     }//GEN-LAST:event_cbProdutosActionPerformed
 
